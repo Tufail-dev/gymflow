@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,7 +72,7 @@ public class UserService {
         if(user.isEmpty()){
             throw new ResourceNotFoundException("Invalid username and password Try again");
 
-        }
+        } 
 
             boolean isvalid;
            isvalid= passwordEncoder.matches(loginRequestDto.getPassword(),
@@ -89,6 +90,28 @@ public class UserService {
 
         return userResponceDto1;
     }
+
+    public UserResponceDto getUserByUsername(String username){
+        User user= userRepo.findByusername(username)
+                .orElseThrow(()->new ResourceNotFoundException("User doest not exist in the record "));
+        UserResponceDto userResponceDto= modelMapper.map(user,UserResponceDto.class);
+        userResponceDto.setMessage("user is found");
+        return  userResponceDto;
+
+    }
+     public List<UserResponceDto> getAllusers(){
+         List<User> user= userRepo.findAll();
+        List< UserResponceDto> userResponceDto1= user.stream().map(m-> modelMapper.map(m,UserResponceDto.class)).toList();
+        return userResponceDto1;
+     }
+
+         public UserResponceDto deleteuser(Long id){
+          User user= userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user not found"));
+
+          UserResponceDto userResponceDto= modelMapper.map(user,UserResponceDto.class);
+          userRepo.delete(user);
+            return userResponceDto;
+         }
 }
 
 
