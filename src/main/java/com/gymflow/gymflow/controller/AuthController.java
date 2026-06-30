@@ -5,6 +5,7 @@ import com.gymflow.gymflow.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -38,6 +39,13 @@ public class AuthController {
         UserResponceDto userResponceDto= userService.deleteuser(id);
         return new ResponseEntity<>(userResponceDto, HttpStatus.OK);
 
+    }
+
+    @PutMapping("/update{id}")
+    public ResponseEntity<UserResponceDto> updateUser(@PathVariable Long id,@RequestBody UserRequestDto userRequestDto){
+        UserResponceDto userResponceDto= userService.updateUser(id,userRequestDto);
+
+        return  new ResponseEntity<>(userResponceDto, HttpStatus.OK);
     }
 
 

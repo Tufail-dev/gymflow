@@ -1,6 +1,6 @@
 package com.gymflow.gymflow.service;
 
-import com.gymflow.gymflow.config.SecurityConfig;
+
 import com.gymflow.gymflow.dto.LoginRequestDto;
 import com.gymflow.gymflow.dto.UserRequestDto;
 import com.gymflow.gymflow.dto.UserResponceDto;
@@ -112,6 +112,20 @@ public class UserService {
           userRepo.delete(user);
             return userResponceDto;
          }
+
+         public UserResponceDto updateUser( Long id,UserRequestDto userRequestDto){
+            User user= userRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException(" This user is not existed"));
+
+            user.setUsername(userRequestDto.getUsername());
+             user.setEmail(userRequestDto.getEmail());
+            userRepo.save(user);
+            UserResponceDto userResponceDto = modelMapper.map(user,UserResponceDto.class);
+
+        return userResponceDto;
+
+
+         }
+
 }
 
 
