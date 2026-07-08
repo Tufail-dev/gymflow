@@ -1,4 +1,5 @@
 package com.gymflow.gymflow.controller;
+import com.gymflow.gymflow.dto.UserPageResponseDto;
 import com.gymflow.gymflow.dto.UserRequestDto;
 import com.gymflow.gymflow.dto.UserResponceDto;
 import com.gymflow.gymflow.service.UserService;
@@ -29,9 +30,11 @@ public class AuthController {
 
     }
     @GetMapping("/users")
-    public List<UserResponceDto> getAllUsers(){
-        List<UserResponceDto> userResponceDto= userService.getAllusers();
-       return userResponceDto;
+    public UserPageResponseDto getAllUsers(@RequestParam(name="Page")Integer PageNUmber,
+                                           @RequestParam(name="Size")Integer PageSize)
+    {
+
+       return userService.getAllusers(PageNUmber,PageSize);
 
     }
     @DeleteMapping("/{id}")
@@ -46,6 +49,12 @@ public class AuthController {
         UserResponceDto userResponceDto= userService.updateUser(id,userRequestDto);
 
         return  new ResponseEntity<>(userResponceDto, HttpStatus.OK);
+    }
+    @GetMapping("/Roles{roleName}")
+    public List<UserResponceDto> role(@PathVariable String roleName){
+      List<UserResponceDto> userResponceDto= userService.findUserbyRolename(roleName);
+        return userResponceDto;
+
     }
 
 

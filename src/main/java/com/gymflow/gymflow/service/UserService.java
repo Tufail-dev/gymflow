@@ -2,6 +2,7 @@ package com.gymflow.gymflow.service;
 
 
 import com.gymflow.gymflow.dto.LoginRequestDto;
+import com.gymflow.gymflow.dto.UserPageResponseDto;
 import com.gymflow.gymflow.dto.UserRequestDto;
 import com.gymflow.gymflow.dto.UserResponceDto;
 
@@ -13,8 +14,13 @@ import com.gymflow.gymflow.repository.RoleRepo;
 import com.gymflow.gymflow.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 
 import java.util.List;
@@ -92,6 +98,7 @@ public class UserService {
     }
 
     public UserResponceDto getUserByUsername(String username){
+
         User user= userRepo.findByusername(username)
                 .orElseThrow(()->new ResourceNotFoundException("User doest not exist in the record "));
         UserResponceDto userResponceDto= modelMapper.map(user,UserResponceDto.class);
@@ -99,10 +106,26 @@ public class UserService {
         return  userResponceDto;
 
     }
-     public List<UserResponceDto> getAllusers(){
-         List<User> user= userRepo.findAll();
-        List< UserResponceDto> userResponceDto1= user.stream().map(m-> modelMapper.map(m,UserResponceDto.class)).toList();
-        return userResponceDto1;
+     public UserPageResponseDto getAllusers(Integer PageNUmber,Integer PageSize){
+         Pageable pageable= PageRequest.of(PageNUmber,PageSize, Sort.by("username").ascending());
+         Page<User> pagedata = userRepo.findAll(pageable);
+        List<User> pagedataa= pagedata.getContent();
+
+           List<UserResponceDto> pageresponce=  pagedataa.stream().map(page-> modelMapper.map(page,UserResponceDto.class)).toList();
+            UserPageResponseDto  userPageResponseDto= new UserPageResponseDto();
+         userPageResponseDto.setContent(pageresponce);
+         userPageResponseDto.setTotalPages(pagedata.getTotalPages());
+         userPageResponseDto.setTotalElements(pagedata.getTotalElements());
+         userPageResponseDto.setPageNumber(pagedata.getNumber());
+         userPageResponseDto.setPageSize(pagedata.getSize());
+         userPageResponseDto.setFirst(pagedata.isFirst());
+         userPageResponseDto.setLast(pagedata.isLast());
+
+
+
+
+
+        return userPageResponseDto;
      }
 
          public UserResponceDto deleteuser(Long id){
@@ -124,6 +147,17 @@ public class UserService {
         return userResponceDto;
 
 
+         }
+         public List<UserResponceDto> findUserbyRolename(String roleName){
+        List<User> userR= userRepo.findByRoleRoleName(roleName);
+        if(userR.isEmpty()){
+            throw new ResourceNotFoundException("This role is not in the database");
+        }
+             List< UserResponceDto> userResponceDtos= userR.stream().map(m-> modelMapper.map(m,UserResponceDto.class)).toList();
+            
+
+
+        return  userResponceDtos;
          }
 
 }
