@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Entity
 @Data
@@ -22,5 +24,9 @@ public class User  {
    @JoinColumn(name = "user_role")
     private Role role;
     private String message;
+
+
+    @OneToMany
+    private List<Food> food;
 
 }
