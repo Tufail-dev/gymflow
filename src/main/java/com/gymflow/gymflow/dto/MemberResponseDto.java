@@ -12,4 +12,6 @@ public class MemberResponseDto {
     private String Name;
     private String membershipType;
     private String feeamount="Paid";
+    private Double dailyCalorieGoal;
+    private Double dailyProteinGoal;
 }

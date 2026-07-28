@@ -1,5 +1,6 @@
 package com.gymflow.gymflow.dto;
 
+import com.gymflow.gymflow.entity.MealType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FoodResponceDto {
-    private String foodName;
-    private double calorie;
-    private double protien;
-    private double fat;
-    private double carbs;
-    private double quantityInGrams;
+public class FoodLogRequestDto {
+    private Long foodId;
+    private Double quantity;
+    private MealType mealType;
+    private Long memberId;
 
 }

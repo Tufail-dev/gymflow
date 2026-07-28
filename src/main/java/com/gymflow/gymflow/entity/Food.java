@@ -32,7 +32,12 @@ public class Food {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="User_id")
-    private User user;
+    private Member member;
+
+
+    @ManyToOne
+    @JoinColumn(name="member_id")
+    private Member member1;
 
 
 }

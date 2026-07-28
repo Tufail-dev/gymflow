@@ -31,6 +31,9 @@ public class JwtFilter extends OncePerRequestFilter {
                         token.startsWith("Bearer ")
         ) {
             String jwt = token.substring(7);
+            System.out.println("Header = [" + token + "]");
+            System.out.println("JWT = [" + jwt + "]");
+            System.out.println("Length = " + jwt.length());
             String username = jwtUtil.extractUsernameFromToken(jwt);
             UserDetails loadedUser = customUserDetailsService.loadUserByUsername(username);
             if(jwtUtil.validateToken(jwt,loadedUser)){

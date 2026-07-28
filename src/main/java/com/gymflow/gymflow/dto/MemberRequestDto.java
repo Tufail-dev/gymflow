@@ -26,4 +26,6 @@ public class MemberRequestDto {
     @NotBlank(message = "Membership type required")
     private String membershipType;
     private BigDecimal feeamount;
+    private Double dailyCalorieGoal;   // naya
+    private Double dailyProteinGoal;
 }

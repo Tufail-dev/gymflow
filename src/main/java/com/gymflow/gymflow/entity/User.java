@@ -20,13 +20,13 @@ public class User  {
     private String password;
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "user_role")
     private Role role;
     private String message;
 
 
-    @OneToMany
-    private List<Food> food;
+@OneToOne(mappedBy="user")
+    private Member member;
 
 }

@@ -1,57 +1,95 @@
 package com.gymflow.gymflow.service;
 
-import com.gymflow.gymflow.dto.FoodResponceDto;
-import com.gymflow.gymflow.exception.ResourceNotFoundException;
+import com.gymflow.gymflow.dto.FoodResponseDto;
+import com.gymflow.gymflow.dto.FoodSearchResponseDto;
 import com.gymflow.gymflow.external.UsdaApiService;
+import com.gymflow.gymflow.external.dto.ScaledFoodResponse;
+import com.gymflow.gymflow.external.dto.UsdaFoodDetailsResponse;
 import com.gymflow.gymflow.external.dto.UsdaFoodItem;
-import com.gymflow.gymflow.external.dto.UsdaNutrient;
+
 import com.gymflow.gymflow.external.dto.UsdaSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
-    public class FoodService {
+public class FoodService {
 
+    @Autowired
+    private UsdaApiService usdaApiService;
 
+    // Step 1: Search foods
+    public List<FoodSearchResponseDto> searchFood(String query) {
 
+        UsdaSearchResponse response = usdaApiService.searchFood(query);
 
-        @Autowired
-        private UsdaApiService usdaApiService;
-     public    FoodResponceDto searchFood(String foodName,double quantityInGrams){
-        UsdaSearchResponse usdaSearchResponse1 = usdaApiService.searchFood(foodName);
-        FoodResponceDto foodResponceDto = new FoodResponceDto();
-        List<UsdaFoodItem>  usdaFoodItem= usdaSearchResponse1.getFoods();
-        if(usdaFoodItem.isEmpty()){
-            throw new ResourceNotFoundException("No food found for: " + foodName);
+        if (response == null || response.getFoods() == null) {
+            return Collections.emptyList();
         }
 
+        List<UsdaFoodItem> foods = response.getFoods();
 
-         foodResponceDto.setFoodName(usdaFoodItem.get(0).getDescription());
+        List<FoodSearchResponseDto> searchResults = new ArrayList<>();
 
-            List< UsdaNutrient> nutrients = usdaFoodItem.get(0).getFoodNutrients();
-         double factor = quantityInGrams / 100.0;
+        for (UsdaFoodItem item : foods) {
 
-         foodResponceDto.setQuantityInGrams(quantityInGrams);
-            for (UsdaNutrient nutrient:nutrients){
-                if (nutrient.getNutrientName().equals("Energy")) {
-                        foodResponceDto.setCalorie(nutrient.getValue()* factor);
+            FoodSearchResponseDto dto = new FoodSearchResponseDto();
 
-                }
-                if(nutrient.getNutrientName().equals("Protein")){
-                    foodResponceDto.setProtien(nutrient.getValue()* factor);
-                }
-                if ("Carbohydrate, by difference".equals(nutrient.getNutrientName())) {
-                   foodResponceDto.setCarbs(nutrient.getValue()* factor);
-                }
+            dto.setFoodId(item.getFdcId());
+            dto.setFoodName(item.getDescription());
 
-                if ("Total lipid (fat)".equals(nutrient.getNutrientName())) {
-                   foodResponceDto.setFat(nutrient.getValue()* factor);
-                }
-
-            }
-
-            return foodResponceDto;
+            searchResults.add(dto);
         }
+
+        return searchResults;
     }
+
+    // Step 2: Get nutrition for the selected food
+//    public FoodResponseDto getFoodDetails(Long foodId, double quantityInGrams) {
+//
+//        UsdaFoodItem foodItem = usdaApiService.getFoodDetails(foodId);
+//
+//        if (foodItem == null) {
+//            throw new RuntimeException("Food not found for id: " + foodId);
+//        }
+//
+//        double caloriesPer100g = 0;
+//        double proteinPer100g = 0;
+//        double carbsPer100g = 0;
+//        double fatPer100g = 0;
+//        if()
+
+//        if (foodItem.getFoodNutrients() != null) {
+//            for (UsdaNutrient nutrient : foodItem.getFoodNutrients()) {
+//                String name = nutrient.getNutrientName();
+//                if (name == null) continue;
+//
+//                switch (name) {
+//                    case "Energy" -> caloriesPer100g = nutrient.getValue();
+//                    case "Protein" -> proteinPer100g = nutrient.getValue();
+//                    case "Carbohydrate, by difference" -> carbsPer100g = nutrient.getValue();
+//                    case "Total lipid (fat)" -> fatPer100g = nutrient.getValue();
+//                }
+//            }
+//        }
+//
+//        double calories = (caloriesPer100g * quantityInGrams) / 100.0;
+//        double protein  = (proteinPer100g  * quantityInGrams) / 100.0;
+//        double carbs    = (carbsPer100g    * quantityInGrams) / 100.0;
+//        double fat      = (fatPer100g      * quantityInGrams) / 100.0;
+//
+//        FoodResponseDto dto = new FoodResponseDto();
+//        dto.setF(foodId);
+//        dto.setFoodName(foodItem.getDescription());
+//        dto.setQuantity(quantityInGrams);
+//        dto.setCalories(calories);
+//        dto.setProtein(protein);
+//        dto.setCarbs(carbs);
+//        dto.setFat(fat);
+//
+//        return dto;
+//    }
+}

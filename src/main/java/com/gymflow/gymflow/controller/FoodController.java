@@ -1,27 +1,32 @@
-    package com.gymflow.gymflow.controller;
+package com.gymflow.gymflow.controller;
 
-    import com.gymflow.gymflow.dto.FoodResponceDto;
-    import com.gymflow.gymflow.external.dto.UsdaSearchResponse;
-    import com.gymflow.gymflow.service.FoodService;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RequestParam;
-    import org.springframework.web.bind.annotation.RestController;
+import com.gymflow.gymflow.dto.FoodResponseDto;
+import com.gymflow.gymflow.dto.FoodSearchResponseDto;
+import com.gymflow.gymflow.service.FoodService;
+import org.springframework.web.bind.annotation.*;
 
-    @RestController
-    @RequestMapping("/api/foods")
+import java.util.List;
 
-    public class FoodController {
+@RestController
+@RequestMapping("/api/foods")
+public class FoodController {
 
-        private FoodService foodService;
+    private final FoodService foodService;
 
-        public FoodController(FoodService foodService) {
-            this.foodService = foodService;
-        }
-        @GetMapping("/search")
-       public FoodResponceDto searchFood(@RequestParam  String foodName,double quantityInGrams){
-            return  foodService.searchFood(foodName,quantityInGrams);
-
-
-        }
+    public FoodController(FoodService foodService) {
+        this.foodService = foodService;
     }
+
+    @GetMapping("/search")
+    public List<FoodSearchResponseDto> searchFood(@RequestParam String query) {
+        return foodService.searchFood(query);
+    }
+}
+//    @GetMapping("/{foodId}")
+//    public FoodResponseDto getFoodDetails(
+//            @PathVariable Long foodId,
+//            @RequestParam double quantity) {
+//
+//        return foodService.getFoodDetails(foodId, quantity);
+//    }
+//}

@@ -1,12 +1,13 @@
 spring.application.name=gymflow
 spring.datasource.url=jdbc:mysql://localhost:3306/gymflow_db
 spring.datasource.username=root
-spring.datasource.password=vali@123
+spring.datasource.password=your_password_here
 spring.security.user.name=admin
 spring.security.user.password=admin123
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-jwt.secret=2sK9LmP8xVq7NfR4wTy8ZaBcDeFgHiJkMnOpQrStUvWxYz123456789
+jwt.secret=your_jwt_secret_here
 jwt.expiration=86400000
-usda.api.key=mJG5DhvCwYkqtCvzW5lesI6y3elOMlHXSwwIKbEg
+usda.api.key=your_usda_api_key_here
 usda.api.url=https://api.nal.usda.gov/fdc/v1/foods/search
+usda.api.detail.url=https://api.nal.usda.gov/fdc/v1/food

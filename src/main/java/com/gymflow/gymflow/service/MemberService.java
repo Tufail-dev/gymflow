@@ -50,7 +50,9 @@ public class MemberService {
             member1.setEmail(memberRequestDto.getEmail());
             member1.setPhone(memberRequestDto.getPhone());
             member1.setMembershipType(memberRequestDto.getMembershipType());
-            Member safemember= memberRepo.save(member1);
+        member1.setDailyCalorieGoal(memberRequestDto.getDailyCalorieGoal());   // naya
+        member1.setDailyProteinGoal(memberRequestDto.getDailyProteinGoal());
+        Member safemember= memberRepo.save(member1);
             MemberResponseDto memberResponseDto1= modelMapper.map(safemember,MemberResponseDto.class);
 
         return  memberResponseDto1;

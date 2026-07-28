@@ -21,8 +21,24 @@ public class Member {
     private String email;
     private String phone;
     private String membershipType;
+    private Double dailyCalorieGoal;
+    private Double dailyProteinGoal;
 
 
     @OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<TrainingPlan> trainingPlanList;
+
+    @OneToMany
+    private List<Food> food;
+
+    @OneToOne
+    @JoinColumn(name="user_id")
+    private  User user;
+
+    @OneToMany(mappedBy ="member1" )
+    private List<Food> foodList;
+
+    @OneToMany(mappedBy ="member")
+    private List<FoodLog> foodLogs;
+
 }
