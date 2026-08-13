@@ -28,8 +28,6 @@ public class Member {
     @OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<TrainingPlan> trainingPlanList;
 
-    @OneToMany
-    private List<Food> food;
 
     @OneToOne
     @JoinColumn(name="user_id")
