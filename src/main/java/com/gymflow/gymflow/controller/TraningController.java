@@ -23,8 +23,8 @@ public class TraningController {
     @GetMapping("/showall")
 
     public List<TraningResponceDto>  getalltrainingplan(){
-         TraningResponceDto traningResponceDtos= (TraningResponceDto) traningService.getallTraningplans();
-        return (List<TraningResponceDto>) traningResponceDtos;
+
+        return traningService.getallTraningplans();
     }
 
     @GetMapping("{id}")
