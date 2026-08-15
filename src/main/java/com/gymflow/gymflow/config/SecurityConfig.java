@@ -27,12 +27,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(cors -> {
-                })
+                .cors(cors -> {})
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
@@ -42,13 +41,10 @@ public class SecurityConfig {
                                 "/api/foods/**",
                                 "/api/food-logs/**"
                         ).permitAll()
-
-                        // IMPORTANT: browser preflight
                         .requestMatchers(
                                 org.springframework.http.HttpMethod.OPTIONS,
                                 "/**"
                         ).permitAll()
-
                         .anyRequest().authenticated()
                 );
 
@@ -58,5 +54,17 @@ public class SecurityConfig {
         );
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
