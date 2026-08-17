@@ -14,4 +14,5 @@ public class MemberResponseDto {
     private String feeamount="Paid";
     private Double dailyCalorieGoal;
     private Double dailyProteinGoal;
+    private String goal;
 }

@@ -28,4 +28,5 @@ public class MemberRequestDto {
     private BigDecimal feeamount;
     private Double dailyCalorieGoal;   // naya
     private Double dailyProteinGoal;
+    private String goal;
 }

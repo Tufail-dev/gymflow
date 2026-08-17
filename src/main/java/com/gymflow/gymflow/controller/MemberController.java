@@ -9,6 +9,7 @@ import com.gymflow.gymflow.dto.MemberResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class MemberController {
     @GetMapping("{id}")
     public MemberResponseDto  gememberBYId(@PathVariable Long id ){
         return memberService.getMemberById(id);
+    }
+    @GetMapping("/me")
+    public MemberResponseDto getMyMember(Authentication authentication) {
+        String username = authentication.getName();
+        return memberService.getMemberByUserEmail(username);
     }
     @PutMapping("{id}")
     public MemberResponseDto updatemember(@RequestBody MemberRequestDto memberRequestDto,@PathVariable Long id  ){

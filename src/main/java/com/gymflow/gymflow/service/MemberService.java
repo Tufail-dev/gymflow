@@ -2,15 +2,18 @@ package com.gymflow.gymflow.service;
 
 import com.gymflow.gymflow.dto.MemberResponseDto;
 import com.gymflow.gymflow.entity.Member;
+import com.gymflow.gymflow.entity.User;
 import com.gymflow.gymflow.exception.ResourceNotFoundException;
 import com.gymflow.gymflow.repository.MemberRepo;
+import com.gymflow.gymflow.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import com.gymflow.gymflow.dto.MemberRequestDto;
-import com.gymflow.gymflow.dto.MemberResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -18,6 +21,8 @@ public class MemberService {
     private ModelMapper modelMapper;
     @Autowired
     private  MemberRepo memberRepo;
+    @Autowired
+    private UserRepo userRepo;
 
 
     public MemberResponseDto addMember(MemberRequestDto memberRequestDto){
@@ -67,5 +72,18 @@ public class MemberService {
         return  memberResponseDto;
 
     }
+    public MemberResponseDto getMemberByUserEmail(String username) {
 
+        User user = userRepo.findByusername(username)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+
+        Member member = user.getMember();
+
+        if (member == null) {
+            throw new ResourceNotFoundException("Member profile not found");
+        }
+
+        return modelMapper.map(member, MemberResponseDto.class);
+    }
 }

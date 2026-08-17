@@ -23,6 +23,7 @@ public class Member {
     private String membershipType;
     private Double dailyCalorieGoal;
     private Double dailyProteinGoal;
+    private String goal;
 
 
     @OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL , fetch = FetchType.LAZY)
