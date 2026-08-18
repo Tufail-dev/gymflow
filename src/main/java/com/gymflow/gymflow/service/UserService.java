@@ -20,7 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.gymflow.gymflow.entity.Member;
+import com.gymflow.gymflow.repository.MemberRepo;
 
 
 import java.util.List;
@@ -37,6 +38,8 @@ public class UserService {
     @Autowired
 
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MemberRepo memberRepo;
 
 
     public UserResponceDto registration(UserRequestDto userRequestDto) {
@@ -65,6 +68,15 @@ public class UserService {
         newuser.setRole(role);
         newuser.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         userRepo.save(newuser);
+
+        Member member = new Member();
+        member.setUser(newuser);
+        member.setName(newuser.getUsername());
+        member.setEmail(newuser.getEmail());
+
+        memberRepo.save(member);
+
+
         UserResponceDto userResponceDto =
                 modelMapper.map(newuser, UserResponceDto.class);
         userResponceDto.setMessage("User registered successfully");
