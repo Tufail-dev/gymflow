@@ -1,7 +1,7 @@
 package com.gymflow.gymflow.controller;
 
 import com.gymflow.gymflow.dto.FoodItemDto;
-import com.gymflow.gymflow.service.FoodService;
+import com.gymflow.gymflow.service.FoodSearchService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,22 +10,14 @@ import java.util.List;
 @RequestMapping("/api/foods")
 public class FoodController {
 
-    private final FoodService foodService;
+    private final FoodSearchService foodSearchService;
 
-    public FoodController(FoodService foodService) {
-        this.foodService = foodService;
+    public FoodController(FoodSearchService foodSearchService) {
+        this.foodSearchService = foodSearchService;
     }
 
     @GetMapping("/search")
     public List<FoodItemDto> searchFood(@RequestParam String query) {
-        return foodService.searchFood(query);
+        return foodSearchService.searchFoodWithNutrition(query);
     }
 }
-//    @GetMapping("/{foodId}")
-//    public FoodResponseDto getFoodDetails(
-//            @PathVariable Long foodId,
-//            @RequestParam double quantity) {
-//
-//        return foodService.getFoodDetails(foodId, quantity);
-//    }
-//}
