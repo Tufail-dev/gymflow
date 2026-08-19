@@ -1,4 +1,4 @@
-package com.gymflow.gymflow.external.dto;
+package com.gymflow.gymflow.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FoodSearchResponseDto {
+public class FoodItemDto {
 
     private Long foodId;
     private String foodName;

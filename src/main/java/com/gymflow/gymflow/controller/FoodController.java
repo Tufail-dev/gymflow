@@ -1,7 +1,6 @@
 package com.gymflow.gymflow.controller;
 
-import com.gymflow.gymflow.dto.FoodResponseDto;
-import com.gymflow.gymflow.dto.FoodSearchResponseDto;
+import com.gymflow.gymflow.dto.FoodItemDto;
 import com.gymflow.gymflow.service.FoodService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,7 @@ public class FoodController {
     }
 
     @GetMapping("/search")
-    public List<FoodSearchResponseDto> searchFood(@RequestParam String query) {
+    public List<FoodItemDto> searchFood(@RequestParam String query) {
         return foodService.searchFood(query);
     }
 }

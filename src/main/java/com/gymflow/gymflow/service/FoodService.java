@@ -1,5 +1,6 @@
 package com.gymflow.gymflow.service;
 
+import com.gymflow.gymflow.dto.FoodItemDto;
 import com.gymflow.gymflow.dto.FoodSearchResponseDto;
 import com.gymflow.gymflow.external.UsdaApiService;
 import com.gymflow.gymflow.external.dto.UsdaFoodItem;
@@ -19,7 +20,7 @@ public class FoodService {
     private UsdaApiService usdaApiService;
 
     // Step 1: Search foods
-    public List<FoodSearchResponseDto> searchFood(String query) {
+    public List<FoodItemDto> searchFood(String query) {
 
         UsdaSearchResponse response = usdaApiService.searchFood(query);
 
@@ -29,11 +30,11 @@ public class FoodService {
 
         List<UsdaFoodItem> foods = response.getFoods();
 
-        List<FoodSearchResponseDto> searchResults = new ArrayList<>();
+        List<FoodItemDto> searchResults = new ArrayList<>();
 
         for (UsdaFoodItem item : foods) {
 
-            FoodSearchResponseDto dto = new FoodSearchResponseDto(food.getFdcId(), food.getDescription(), calories, protein, fat, carbs);
+           FoodItemDto dto = new FoodItemDto();
 
             dto.setFoodId(item.getFdcId());
             dto.setFoodName(item.getDescription());
