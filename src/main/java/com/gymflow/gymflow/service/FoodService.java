@@ -1,10 +1,7 @@
 package com.gymflow.gymflow.service;
 
-import com.gymflow.gymflow.dto.FoodResponseDto;
 import com.gymflow.gymflow.dto.FoodSearchResponseDto;
 import com.gymflow.gymflow.external.UsdaApiService;
-import com.gymflow.gymflow.external.dto.ScaledFoodResponse;
-import com.gymflow.gymflow.external.dto.UsdaFoodDetailsResponse;
 import com.gymflow.gymflow.external.dto.UsdaFoodItem;
 
 import com.gymflow.gymflow.external.dto.UsdaSearchResponse;
@@ -36,7 +33,7 @@ public class FoodService {
 
         for (UsdaFoodItem item : foods) {
 
-            FoodSearchResponseDto dto = new FoodSearchResponseDto();
+            FoodSearchResponseDto dto = new FoodSearchResponseDto(food.getFdcId(), food.getDescription(), calories, protein, fat, carbs);
 
             dto.setFoodId(item.getFdcId());
             dto.setFoodName(item.getDescription());
